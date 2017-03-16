@@ -24,17 +24,6 @@ erb -T 2 -r uri -r base64 ./kibana.erb > /etc/nginx/sites-enabled/kibana || {
   exit 1
 }
 
-# If we don't have a version set, then try to guess one form the Elasticsearch server.
-if [[ -z "$KIBANA_ACTIVE_VERSION" ]]; then
-  KIBANA_VERSION_PARSER="
-  require 'json'
-  version = JSON.parse(STDIN.read)['version']['number']
-  print 41 if version.start_with?('1.')
-  print 44 if version.start_with?('2.')
-  print 5 if version.start_with?('5.')"
-  KIBANA_ACTIVE_VERSION="$(curl "$DATABASE_URL" 2>/dev/null | ruby -e "$KIBANA_VERSION_PARSER" 2>/dev/null)"
-fi
-
 # If we still don't have a version, fall back to the default.
 if [[ -z "$KIBANA_ACTIVE_VERSION" ]]; then
     echo "Warning: unable to fetch Elasticsearch version, and none configured. Defaulting to 5.x. Consider setting KIBANA_ACTIVE_VERSION."
@@ -54,7 +43,7 @@ erb -T 2 -r uri "/opt/kibana-${KIBANA_VERSION}/config/kibana.yml.erb" > "/opt/ki
 
 # Install our kibana-html-formatter plugin
 pushd "/opt/kibana-${KIBANA_VERSION}-linux-x64"
-./bin/kibana plugin --install html-formatter --url https://github.com/canvas-medical/kibana-html-formatter/releases/download/v1.0.1/html-formatter-1.0.1.zip
+./bin/kibana plugin --install html-formatter --url https://github.com/canvas-medical/kibana-html-formatter/releases/download/v1.1.0/html-formatter-1.1.0.zip
 ./bin/kibana plugin --install elastic/sense
 popd
 
