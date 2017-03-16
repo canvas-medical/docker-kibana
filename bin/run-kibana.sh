@@ -42,8 +42,8 @@ erb -T 2 -r uri "/opt/kibana-${KIBANA_VERSION}/config/kibana.yml.erb" > "/opt/ki
 }
 
 # Install our kibana-html-formatter plugin
-pushd "/opt/kibana-${KIBANA_VERSION}-linux-x64"
-./bin/kibana plugin --install html-formatter --url https://github.com/canvas-medical/kibana-html-formatter/releases/download/v5.2.2/html-formatter-5.2.2.zip
+pushd "/opt/kibana-${KIBANA_VERSION}"
+./bin/kibana-plugin install https://github.com/canvas-medical/kibana-html-formatter/releases/download/v5.2.2/html-formatter-5.2.2.zip
 popd
 
 service nginx start
