@@ -21,9 +21,11 @@ RUN curl -fsSLO "https://artifacts.elastic.co/downloads/kibana/kibana-${KIBANA_5
 RUN rm /etc/nginx/sites-enabled/*
 ADD templates/sites-enabled /
 
-RUN rm "/opt/kibana-${KIBANA_5_VERSION}/config/kibana.yml"
-
 ADD templates/opt/kibana-5.x/ /opt/kibana-${KIBANA_5_VERSION}/config
+
+RUN cd "/opt/kibana-${KIBANA_5_VERSION}/" && ./bin/kibana-plugin install https://github.com/canvas-medical/kibana-html-formatter/releases/download/v5.2.2/html-formatter-5.2.2.zip
+
+RUN rm "/opt/kibana-${KIBANA_5_VERSION}/config/kibana.yml"
 
 # Add script that starts NGiNX in front of Kibana and tails the NGiNX access/error logs.
 ADD bin .

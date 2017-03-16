@@ -41,11 +41,6 @@ erb -T 2 -r uri "/opt/kibana-${KIBANA_VERSION}/config/kibana.yml.erb" > "/opt/ki
   exit 1
 }
 
-# Install our kibana-html-formatter plugin
-pushd "/opt/kibana-${KIBANA_VERSION}"
-./bin/kibana-plugin install https://github.com/canvas-medical/kibana-html-formatter/releases/download/v5.2.2/html-formatter-5.2.2.zip
-popd
-
 service nginx start
 
 # Default node options to limit Kibana memory usage as per https://github.com/elastic/kibana/issues/5170
